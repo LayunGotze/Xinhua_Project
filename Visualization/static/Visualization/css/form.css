@@ -1,0 +1,46 @@
+html {
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+
+}
+body
+{
+	font-family:Microsoft YaHei;
+    /*background-image: url('../img/sayagata-400px.png');*/
+}
+.headline {
+	margin:50px 0 30px 0;
+	border-bottom:1px dotted #428bca;
+	padding-left:0px;
+	color:#428bca;
+}
+.btn-show{
+    border:1px solid gray;
+    background-color: #428bca;
+    color:white;
+    font-size: 140%;
+    width:150px;
+	height:45px;
+    margin-top: 30px;
+}
+.star{
+    color:red;
+}
+.form-group{
+    margin-top: 30px;
+}
+.time_input_text{
+    border: 1px solid lightgray;
+    border-radius: 4px;
+    margin-top: -3px;
+    height:30px;
+    width:50%
+}
+.input_text{
+    border: 1px solid lightgray;
+    border-radius: 4px;
+    margin-top: -3px;
+    height:30px;
+    width:25%
+}
+

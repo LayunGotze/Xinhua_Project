@@ -1,0 +1,655 @@
+{% extends "Visualization/base.html" %}
+{% load staticfiles %}
+{% block title %}监测数据可视化{% endblock %}
+
+{% block css %}
+{{ blcok.super }}
+    {{ block.super}}
+    <link rel="stylesheet" href="{% static "Visualization/css/xinhua_viz.css" %}" type="text/css" media="screen" />
+    <link rel="stylesheet" href="{% static "Visualization/css/body.css" %}" type="text/css">
+   <style type="text/css">
+        #controller{width:100%; border-bottom:3px outset; height:30px; filter:alpha(Opacity=100); -moz-opacity:1; opacity:1; z-index:10000; background-color:lightblue;}
+</style>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>监测数据可视化</h1>
+                <!-- The carousel -->
+                <div class="panel panel-primary">
+                    <!-- The carousel -->
+                    <div id="transition-timer-carousel" class="carousel slide transition-timer-carousel" data-ride="carousel">
+                            <!-- Indicators -->
+                            <ol class="carousel-indicators">
+                                <li data-target="#transition-timer-carousel" data-slide-to="0" class="active"></li>
+                                <li data-target="#transition-timer-carousel" data-slide-to="1"></li>
+                                <li data-target="#transition-timer-carousel" data-slide-to="2"></li>
+                            </ol>
+
+                            <!-- Wrapper for slides -->
+                            <div class="carousel-inner">
+                                <div class="item active">
+                                    <img src={% static "Visualization/img/1.jpg" %} style="width:100%;"/>
+                                    <div class="carousel-caption">
+                                        <h1 class="carousel-caption-header">雪山</h1>
+                                        <p class="carousel-caption-text hidden-sm hidden-xs">
+                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse dignissim aliquet rutrum. Praesent vitae ante in nisi condimentum egestas. Aliquam.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="item">
+                                    <img src={% static "Visualization/img/2.jpg" %} style="width:100%;" />
+                                    <div class="carousel-caption">
+                                        <h1 class="carousel-caption-header">夕阳</h1>
+                                        <p class="carousel-caption-text hidden-sm hidden-xs">
+                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse dignissim aliquet rutrum. Praesent vitae ante in nisi condimentum egestas. Aliquam.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="item">
+                                    <img src={% static "Visualization/img/3.jpg" %} style="width:100%;"/>
+                                    <div class="carousel-caption">
+                                        <h1 class="carousel-caption-header">丘陵</h1>
+                                        <p class="carousel-caption-text hidden-sm hidden-xs">
+                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse dignissim aliquet rutrum. Praesent vitae ante in nisi condimentum egestas. Aliquam.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Controls -->
+                            <a class="left carousel-control" href="#transition-timer-carousel" data-slide="prev">
+
+                            </a>
+                            <a class="right carousel-control" href="#transition-timer-carousel" data-slide="next">
+
+                            </a>
+
+                            <!-- Timer "progress bar" -->
+                            <hr class="transition-timer-carousel-progress-bar animate" />
+                        </div>
+                </div>
+                <div><p></p></div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading clickable">
+                        <h3 class="panel-title"><span class="fa fa-newspaper-o"> 新闻报道</span></h3>
+                    </div>
+                    <div class="panel-body">
+                        <b>新闻正文：</b>
+                        <div class="=row">
+                           <p id="news_text"></p>
+                        </div>
+                        <b>延伸阅读：</b>
+                        <div class="=row">
+                            <p id="extern_text"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <h3 class="headline first-child"><span class="fa fa-pie-chart"></span></h3>
+            <h2>实时数据</h2>
+            <p>展示实时的监测数据，包括温度，湿度，PM浓度，甲醛，气体和空气质量六类数据。点击开始按钮，数据随着时间的推进而变化，可以选择暂停来先查看当前时间的详细数据。</p>
+            <div class="col-md-12">
+                <div class="col-md-7">
+                    <div id="data_graph" style="height: 450px"></div>
+                </div>
+                <div class="col-md-5">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="btn btn-group">
+                                <input type="button" class="btn btn-show" id="start" value="开始">
+                                <input type="button" class="btn btn-show" id="stop" value="停止">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-9"  style="width: auto">
+                                <h4>时间:</h4>
+                            </div>
+                            <div class="col-md-3">
+                                <h4><input type="text" readonly="true" style="border: 0px;margin-top: -3px" value="" id="time"></h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-9"  style="width: auto">
+                                <h4>温度℃:</h4>
+                            </div>
+                            <div class="col-md-3">
+                                <h4><input type="text" id="temperature" style="border: 0px;margin-top: -3px" readonly="true" ></h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-9"  style="width: auto">
+                                <h4>湿度RH:</h4>
+                            </div>
+                            <div class="col-md-3">
+                                <h4><input type="text" id="humidity" style="border: 0px;margin-top: -3px" readonly="true" ></h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-9"  style="width: auto">
+                                <h4>PM浓度:</h4>
+                            </div>
+                            <div class="col-md-3">
+                                <h4><input type="text" id="PM" style="border: 0px;margin-top: -3px" readonly="true" ></h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-9" style="width: auto" >
+                                <h4>甲醛ppm:</h4>
+                            </div>
+                            <div class="col-md-3">
+                                <h4><input type="text" id="cascophen" style="border: 0px;margin-top: -3px" readonly="true" ></h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-9" style="width: auto" >
+                                <h4>气体ppm:</h4>
+                            </div>
+                            <div class="col-md-3">
+                                <h4><input type="text" id="gas" style="border: 0px;margin-top: -3px" readonly="true" ></h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-9"  style="width: auto">
+                                <h4>空气质量:</h4>
+                            </div>
+                            <div class="col-md-3">
+                                <h4><input type="text" id="air_quality" style="border: 0px;margin-top: -3px" readonly="true" ></h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <h3 class="headline first-child"><span class="fa fa-bar-chart"></span></h3>
+            <h2>对比展示</h2>
+            <div class="col-md-12">
+                <div class="col-md-5">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p>选择两个时间点，对比展示所选时间对应的的监测数据，包括温度，湿度，PM浓度，甲醛，气体和空气质量六类数据。</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-4" style="width: auto">
+                                <h4>时间1:</h4>
+                            </div>
+                            <div class="col-md-8" >
+                                <h4><input type="text" id = "time1" value="" style="border: 1px solid gray;border-radius: 4px;margin-top: -3px"></h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-4" style="width: auto">
+                                <h4>时间2:</h4>
+                            </div>
+                            <div class="col-md-8">
+                                <h4><input type="text" id = "time2" value="" style="border: 1px solid gray;border-radius: 4px;margin-top: -3px"></h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-6">
+                                <input type="button" id = "submit" value="提交" class="btn btn-show">
+                            </div>
+                            <div class="col-md-6"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <div id="compare_graph" style="height: 450px"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <h3 class="headline first-child"><span class="fa fa-line-chart"></span></h3>
+            <h2>数据时间线</h2>
+            <p>数据时间线以时间为单位，展示与时间对应的的监测数据，包括温度，湿度，PM浓度，甲醛，气体和空气质量六类数据，形成时间-数据变化曲线图。</p>
+            <div class="col-md-12">
+                <div id="timeline_graph" style="width: 100%;height: 600px"></div>
+            </div>
+        </div>
+        <div class="row">
+            <h3 class="headline first-child"><span class="fa fa-map-marker"></span></h3>
+            <h2>轨迹线</h2>
+            <p>轨迹线以时间为单位，以地图为基础，展示与时间对应的的地理数据以及监测数据，包括温度，湿度，PM浓度，甲醛，气体和空气质量六类数据，形成时间-数据变化轨迹图。</p>
+            <div class="col-md-12">
+                <div id="information_area" style="border:1px solid #e3e3e3">
+                    <div style="margin-top: -20px">
+                        <h4 style="background-color: #e3e3e3;">&nbsp;<i class="fa fa-tasks">&nbsp;<strong >控制选项</strong></i></h4>
+                        <div class="information_content">
+                            <input id="follow" type="checkbox"><span style="font-size:12px">轨迹跟随</span></input>
+                            <div class="btn-group btn-group">
+                                <button type="button" class="btn btn-default" id="play"><span class="fa fa-play"></span></button>
+                                <button type="button" class="btn btn-default" id="pause"><span class="fa fa-pause"></span></button>
+                                <button type="button" class="btn btn-default" id="locate"><span class="fa fa-map-marker"></span></button>
+                            </div>
+                            <div>
+                                <p></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="information" style="display: none">
+                        <h4 style="background-color: #e3e3e3;">&nbsp;<i class="fa fa-th-list">&nbsp;<strong >环境数据</strong></i></h4>
+                        <div class="information_content">
+                            <input type="text" id="_time" style="border:0px;width: 100%" readonly="true"/>
+                            <input type="text" id="_lng" style="border:0px;width: 100%" readonly="true"/>
+                            <input type="text" id="_lat" style="border:0px;width: 100%" readonly="true"/>
+                            <input type="text" id="_temperature" style="border:0px;width: 100%" readonly="true"/>
+                            <input type="text" id="_humidity" style="border:0px;width: 100%" readonly="true"/>
+                            <input type="text" id="_particulate_matter" style="border:0px;width: 100%" readonly="true"/>
+                            <input type="text" id="_cascophen" style="border:0px;width: 100%" readonly="true"/>
+                            <input type="text" id="_gas" style="border:0px;width: 100%" readonly="true"/>
+                            <input type="text" id="_air_quality" style="border:0px;width: 100%" readonly="true"/>
+                            <p></p>
+                        </div>
+                    </div>
+                </div>
+                <div id="map_area"></div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
+
+{% block js %}
+{{ block.super }}
+    <script type="text/javascript" src="{% static "Visualization/js/echarts.js" %}"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=1.5&ak=D2b4558ebed15e52558c6a766c35ee73"></script>
+    <script>
+        $(document).ready(function() {
+            var data = {{ data|safe }};
+            var news = {{ news_text|safe }};
+            var extern = {{ extern_text|safe }};
+            document.getElementById("news_text").innerHTML=news;
+            document.getElementById("extern_text").innerHTML=extern;
+            var len = data.length;
+            var pos = 1;
+            var timeDataPlay;
+            $("#start").click(function(){
+                timeDataPlay = setInterval(function(){
+                if(pos==len){// 到了最后一个则又重复执行
+                    pos = 1;
+                }
+                else{
+                        var time = pos;
+                        $("#time").val(time);
+                        var time_data = getDataByTime(pos);
+                        $("#temperature").val(time_data[0]);
+                        $("#humidity").val(time_data[1]);
+                        $("#PM").val(time_data[2]);
+                        $("#cascophen").val(time_data[3]);
+                        $("#gas").val(time_data[4]);
+                        $("#air_quality").val(time_data[5]);
+                        pos++;
+                        var data_chart = echarts.init(document.getElementById('data_graph'));
+                        var data_option = {
+                            title: {
+                                text: '数据雷达图'
+                            },
+                            toolbox: {
+                                // y: 'bottom',
+                                feature: {
+                                    dataView: {},
+                                    saveAsImage: {
+                                        pixelRatio: 2
+                                    }
+                                }
+                            },
+                            tooltip: {},
+                            legend: {
+                            },
+                            radar: {
+                                // shape: 'circle',
+                                indicator: [
+                                   { name: '温度（temperature）', max: 125},
+                                   { name: '湿度（humidity）', max: 100},
+                                   { name: 'PM浓度（particulate_matter）', max: 5},
+                                   { name: '甲醛（cascophen）', max: 40},
+                                   { name: '气体（gas）', max: 10000},
+                                   { name: '空气质量（air_quality）', max: 500}///
+                                ]
+                            },
+                            series: [{
+                                name: '数据',
+                                type: 'radar',
+                                // areaStyle: {normal: {}},
+                                data : [
+                                    {
+                                        value : getDataByTime(time),
+                                        name : '数据'
+                                    }
+                                ]
+                            }]
+                        };
+                        data_chart.setOption(data_option);
+                    }
+                },1000);// 每1秒执行一次
+            });
+            $("#stop").click(function(){
+                clearInterval(timeDataPlay);
+            });
+            ///compare
+            $("#submit").click(function() {
+                var time1 = $("#time1").val();
+                var time2 = $("#time2").val();
+                var compare_chart = echarts.init(document.getElementById('compare_graph'));
+                var compare_option = {
+                    title: {
+                        text: '数据对比展示',
+                        subtext: '随机数据'
+                    },
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                            type: 'shadow'
+                        }
+                    },
+                    toolbox: {
+                        // y: 'bottom',
+                        feature: {
+                            magicType: {
+                                type: ['stack', 'tiled']
+                            },
+                            dataView: {},
+                            saveAsImage: {
+                                pixelRatio: 2
+                            }
+                        }
+                    },
+                    legend: {
+                        data: [time1, time2]
+                    },
+                    grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '3%',
+                        containLabel: true
+                    },
+                    xAxis: {
+                        type: 'value',
+                        boundaryGap: [0, 0.01]
+                    },
+                    yAxis: {
+                        type: 'category',
+                        data: ['温度', '湿度', 'PM浓度', '甲醛', '气体', '空气质量']
+                    },
+                    series: [
+                        {
+                            name: time1,
+                            type: 'bar',
+                            data: getDataByTime(time1)
+                        },
+                        {
+                            name: time2,
+                            type: 'bar',
+                            data: getDataByTime(time2)
+                        }
+                    ]
+                };
+                compare_chart.setOption(compare_option);
+            });
+            ///timeline
+            var timeline_chart = echarts.init(document.getElementById('timeline_graph'));
+            var timeline_option = {
+                title: {
+                    text: '时间线'
+                },
+                tooltip : {
+                    trigger: 'axis'
+                },
+                legend: {
+                    data:['温度', '湿度', 'PM浓度', '甲醛', '气体', '空气质量']
+                },
+                toolbox: {
+                    // y: 'bottom',
+                    feature: {
+                        dataView: {},
+                        saveAsImage: {
+                            pixelRatio: 2
+                        }
+                    }
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                xAxis : [
+                    {
+                        type : 'category',
+                        boundaryGap : false,
+                        data : getTime()
+                    }
+                ],
+                yAxis : [
+                    {
+                        type : 'value'
+                    }
+                ],
+                series : [
+                    {
+                        name:'温度',
+                        type:'line',
+                        stack: '数值',
+                        areaStyle: {normal: {}},
+                        data:getDataByCat('temperature')
+                    },
+                    {
+                        name:'湿度',
+                        type:'line',
+                        stack: '数值',
+                        areaStyle: {normal: {}},
+                        data:getDataByCat('humidity')
+                    },
+                    {
+                        name:'PM浓度',
+                        type:'line',
+                        stack: '数值',
+                        areaStyle: {normal: {}},
+                        data:getDataByCat('particulate_matter')
+                    },
+                    {
+                        name:'甲醛',
+                        type:'line',
+                        stack: '数值',
+                        areaStyle: {normal: {}},
+                        data:getDataByCat('cascophen')
+                    },
+                    {
+                        name:'气体',
+                        type:'line',
+                        stack: '数值',
+                        label: {
+                            normal: {
+                                show: true,
+                                position: 'top'
+                            }
+                        },
+                        areaStyle: {normal: {}},
+                        data:getDataByCat('gas')
+                    },
+                    {
+                        name:'空气质量',
+                        type:'line',
+                        stack: '数值',
+                        label: {
+                            normal: {
+                                show: true,
+                                position: 'top'
+                            }
+                        },
+                        areaStyle: {normal: {}},
+                        data:getDataByCat('air_quality')
+                    }
+                ]
+            };
+            timeline_chart.setOption(timeline_option);
+            ////////////////////////////////
+            var map; //百度地图对象
+            var marker; //定位图标
+            var label; //信息标签
+            var centerPoint;
+            var points = getPoint();
+            //初始化地图,选取第一个点为起始点
+            map = new BMap.Map("map_area");
+            map.centerAndZoom(points[0], 15);
+            map.enableScrollWheelZoom();
+            map.addControl(new BMap.NavigationControl());
+            map.addControl(new BMap.ScaleControl());
+            map.addControl(new BMap.OverviewMapControl({isOpen: true}));
+            //通过DrivingRoute获取一条路线的point
+            var driving = new BMap.DrivingRoute(map);
+            driving.search(points[0], points[points.length-1]);
+            //driving.search(new BMap.Point(114.00100, 22.550000), new BMap.Point(113.95100, 22.550000));
+            driving.setSearchCompleteCallback(function () {
+                //得到路线上的所有point
+                points = driving.getResults().getPlan(0).getRoute(0).getPath();
+                //画面移动到起点和终点的中间
+                centerPoint = new BMap.Point((points[0].lng + points[points.length - 1].lng) / 2, (points[0].lat + points[points.length - 1].lat) / 2);
+                map.panTo(centerPoint);
+                //连接所有点
+                map.addOverlay(new BMap.Polyline(points, {
+                    strokeColor: "#428bca",
+                    strokeWeight: 8,
+                    strokeOpacity: 1
+                }));
+                //显示小车子
+                label = new BMap.Label("", {offset: new BMap.Size(-20, -130)});
+                label.setStyle({
+                    color:"black",                   //颜色
+                    fontSize:"8px",                //字号
+                    border:"0"       //边
+                });
+                marker = new BMap.Marker(points[0]);
+                marker.setLabel(label);
+                map.addOverlay(marker);
+                //点亮操作按钮
+            });
+            var index = 0; //记录播放到第几个point
+            var map_timer;
+            $("#play").click(function(){
+                document.getElementById("information").style.display = "block";
+                map_timer = setInterval(function(){
+                if(index==points.length-1){// 到了最后一个则又重复执行
+                    index = 0;
+                }
+                else{
+                        var point = points[index];
+                        var d = data[index];
+                        if(index > 0) {
+                            map.addOverlay(new BMap.Polyline([points[index - 1], point], {strokeColor: "orange", strokeWeight: 5, strokeOpacity: 1}));
+                        }
+                        $("#_time").val("时间: "+ d.timestamp);
+                        $("#_lng").val("经度: " + point.lng  );
+                        $("#_lat").val( "纬度: " + point.lat);
+                        $("#_temperature").val("温度: "+ d.temperature);
+                        $("#_humidity").val("湿度: "+ d.humidity);
+                        $("#_particulate_matter").val("PM浓度: "+ d.particulate_matter);
+                        $("#_cascophen").val("甲醛: "+ d.cascophen);
+                        $("#_gas").val("气体: "+ d.gas);
+                        $("#_air_quality").val("空气质量: "+ d.air_quality );
+                        marker.setPosition(point);
+                        if(document.getElementById("follow").checked){
+                            map.panTo(point);
+                        }
+                        index++;
+                    }
+                },1000);// 每1秒执行一次
+            });
+            $("#pause").click(function(){
+                clearInterval(map_timer);
+            });
+            $("#locate").click(function(){
+               map.panTo(points[index]);
+            });
+            /////////////////////////////
+            function getDataByTime(time){
+                var len = data.length;
+                var ret=[];
+                for(var i =0 ;i<len;i++)
+                {
+                    if (data[i].timestamp == time){
+                        ret[0] = data[i].temperature;
+                        ret[1] = data[i].humidity;
+                        ret[2] = data[i].particulate_matter;
+                        ret[3] = data[i].cascophen;
+                        ret[4] = data[i].gas;
+                        ret[5] = data[i].air_quality;
+                        break;
+                    }
+                }
+                return ret;
+            }
+            function getTime(){
+                var len = data.length;
+                var time_data=[];
+                for(var i=0;i<len;i++){
+                    time_data[i] = data[i].timestamp;
+                }
+                return time_data;
+            }
+            function getDataByCat(cat){
+                var len = data.length;
+                var ret=[];
+                for(var i =0 ;i<len;i++)
+                {
+                    ret[i] = data[i][cat];
+                }
+                return ret;
+            }
+            function getPoint(){
+                var len = data.length;
+                var points = new Array();
+                for(var k=0; k<len; k++){
+                    points.push(new BMap.Point(data[k]['lng'],data[k]['lat']));
+                }
+                return points;
+            }
+        });
+    $(document).ready(function() {
+        //Events that reset and restart the timer animation when the slides change
+        $("#transition-timer-carousel").on("slide.bs.carousel", function(event) {
+            //The animate class gets removed so that it jumps straight back to 0%
+            $(".transition-timer-carousel-progress-bar", this)
+                .removeClass("animate").css("width", "0%");
+        }).on("slid.bs.carousel", function(event) {
+            //The slide transition finished, so re-add the animate class so that
+            //the timer bar takes time to fill up
+            $(".transition-timer-carousel-progress-bar", this)
+                .addClass("animate").css("width", "100%");
+        });
+
+        //Kick off the initial slide animation when the document is ready
+        $(".transition-timer-carousel-progress-bar", "#transition-timer-carousel")
+            .css("width", "100%");
+    });
+    </script>
+{% endblock %}

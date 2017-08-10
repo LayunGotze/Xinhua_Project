@@ -1,0 +1,247 @@
+{% extends 'Visualization/base.html' %}
+{% load staticfiles %}
+{% block title %} 监测数据提交表单 {% endblock %}
+
+{% block css %}
+{{ block.super }}
+    <link rel="stylesheet" href="{% static "Visualization/css/form.css" %}" type="text/css">
+    <link rel="stylesheet" href="{% static "Visualization/css/body.css" %}" type="text/css">
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>监测数据表单</h1>
+                <div class="panel panel-primary">
+                    <!-- The carousel -->
+                    <div id="transition-timer-carousel" class="carousel slide transition-timer-carousel" data-ride="carousel">
+                            <!-- Indicators -->
+                            <ol class="carousel-indicators">
+                                <li data-target="#transition-timer-carousel" data-slide-to="0" class="active"></li>
+                                <li data-target="#transition-timer-carousel" data-slide-to="1"></li>
+                                <li data-target="#transition-timer-carousel" data-slide-to="2"></li>
+                            </ol>
+
+                            <!-- Wrapper for slides -->
+                            <div class="carousel-inner">
+                                <div class="item active">
+                                    <img src={% static "Visualization/img/1.jpg" %} style="width:100%;"/>
+                                    <div class="carousel-caption">
+                                        <h1 class="carousel-caption-header">雪山</h1>
+                                        <p class="carousel-caption-text hidden-sm hidden-xs">
+                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse dignissim aliquet rutrum. Praesent vitae ante in nisi condimentum egestas. Aliquam.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="item">
+                                    <img src={% static "Visualization/img/2.jpg" %} style="width:100%;" />
+                                    <div class="carousel-caption">
+                                        <h1 class="carousel-caption-header">夕阳</h1>
+                                        <p class="carousel-caption-text hidden-sm hidden-xs">
+                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse dignissim aliquet rutrum. Praesent vitae ante in nisi condimentum egestas. Aliquam.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="item">
+                                    <img src={% static "Visualization/img/3.jpg" %} style="width:100%;"/>
+                                    <div class="carousel-caption">
+                                        <h1 class="carousel-caption-header">丘陵</h1>
+                                        <p class="carousel-caption-text hidden-sm hidden-xs">
+                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse dignissim aliquet rutrum. Praesent vitae ante in nisi condimentum egestas. Aliquam.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Controls -->
+                            <a class="left carousel-control" href="#transition-timer-carousel" data-slide="prev">
+
+                            </a>
+                            <a class="right carousel-control" href="#transition-timer-carousel" data-slide="next">
+
+                            </a>
+
+                            <!-- Timer "progress bar" -->
+                            <hr class="transition-timer-carousel-progress-bar animate" />
+                        </div>
+                </div>
+                <div><p></p></div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading clickable">
+                        <h3 class="panel-title"><span class="fa fa-list-alt"> 背景介绍</span></h3>
+                    </div>
+                    <div class="panel-body">
+                        <p><b>数据：</b>随机数据（暂时）</p>
+                        <p><b>描述：</b>温度，湿度，PM浓度，甲醛，气体和空气质量</p>
+                        <table class="table table-hover">
+                            <tbody>
+                            <tr class="info">
+                                <td>传感器类型</td>
+                                <td>测量精确范围</td>
+                                <td>测量范围</td>
+                                <td>模拟数据输出范围</td>
+                            </tr>
+                            <tr>
+                                <td>温度传感器</td>
+                                <td>±0.2℃</td>
+                                <td>–40°C to +125°C</td>
+                                <td>根据当天现场可能的温度范围进行模拟数据生成，然后进行输出，控制可视化界面的数据动态显示</td>
+                            </tr>
+                            <tr class="info">
+                                <td>湿度传感器</td>
+                                <td>±3%RH</td>
+                                <td>0~100%RH</td>
+                                <td>根据当天现场可能的湿度范围进行模拟数据生成，然后进行输出，控制可视化界面的数据动态显示</td>
+                            </tr>
+                            <tr>
+                                <td>空气质量传感器</td>
+                                <td></td>
+                                <td>测量范围由软件输出的条件产生如下结果：1）空气清新 2）空气低污染 3）空气高污染</td>
+                                <td>生成一组随机数据，数据范围在1到300之间，数据输出结果如下： 1-100： 空气清新； 101-200：空气低度污染； 201-300： 空气高污染</td>
+                            </tr>
+                            <tr class="info">
+                                <td>甲醛传感器</td>
+                                <td>5 ~ 40 ppm</td>
+                                <td>甲醛化学指数指标由甲醛的化学特性决定，软件输出传感器读取的甲醛数值</td>
+                                <td>一般没有甲醛的情况下，甲醛的数值一般很低，低于3ppm，可以生成一组随机数据在0-40 之间，以3ppm为阈值</td>
+                            </tr>
+                            <tr>
+                                <td>气体传感器</td>
+                                <td>200 ~ 10000 ppm</td>
+                                <td>模块是用于气体泄漏检测（家庭和工业）。它可以检测石油气，异丁烷，甲烷，醇，氢气，烟等。根据它的快速响应时间。测量可以尽早采取。也灵敏度可由电位进行调整。</td>
+                                <td>模拟数据生成一组随机数在200到10000之间，或者将范围缩小，从中设置一个阈值，如果超过这个阈值，可以在可视化界面显示红色告警</td>
+                            </tr>
+                            <tr class="info">
+                                <td>测量PM值浓度的传感器</td>
+                                <td>5V/0.1mg/m3</td>
+                                <td>测量PM值的浓度</td>
+                                <td>输出电压在1-1.5表明空气清新，空气中没有颗粒，超过1.5，在1.5和3之间可以设置一个1.5-2，轻度污染，2-3：重度污染，随机数可以在0-5之间生成。</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <form role="form"  method="post">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading clickable">
+                            <h3 class="panel-title"><span class="fa fa-calendar"> 时间属性</span></h3>
+                        </div>
+                        <div class="panel-body">
+                            <p>允许用户输入环境数据的查询时间范围,以限制分析的时间间隔。</p>
+                            <p>当前数据库时间范围： 1 至 100 </p>
+                            <div class="col-md-6" style="margin-left: -17px">
+                                <label><h4>开始时间: <span class="star">*&nbsp;</span></h4></label>
+                                <input type="text" name="start_time" id="start_time" placeholder="请输入起始时间" class="time_input_text" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
+                            </div>
+                            <div class="col-md-6" >
+                                <label><h4>结束时间: <span class="star">*&nbsp;</span></h4></label>
+                                <input type="text" name="end_time" id="end_time" placeholder="请输入结束时间" class="time_input_text" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading clickable">
+                            <h3 class="panel-title"><span class="fa fa-map-marker"> 地点属性</span></h3>
+                        </div>
+                        <div class="panel-body">
+                            <p>允许用户输入环境数据的检测地点.</p>
+                            <p>当前数据可选地点： beijing </p>
+                            <div class="col-md-12" style="margin-left: -17px">
+                                <label><h4>监测地点: <span class="star">*&nbsp;</span></h4></label><input type="text" name="location" id="location" class="input_text" placeholder="请输入监测地点"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading clickable">
+                            <h3 class="panel-title"><span class="fa fa-th-large "> 权重属性</span></h3>
+                        </div>
+                        <div class="panel-body">
+                            <p>允许用户输入对环境数据的关心点。</p>
+                            <p>比如 SO2, CO 等</p>
+                            <div class="col-md-12" style="margin-left: -17px">
+                                <label><h4>权重信息: <span class="star">*&nbsp;</span></h4></label><input type="text" name="weight" id="weight" class="input_text"  placeholder="请输入权重信息"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading clickable">
+                            <h3 class="panel-title"><span class="fa fa-th-list "> 模板属性</span></h3>
+                        </div>
+                        <div class="panel-body">
+                            <p>允许用户选择生成模板。</p>
+                            <p>比如 A1, A2 等</p>
+                            <div class="col-md-12" style="margin-left: -17px">
+                                <label><h4>生成模板: <span class="star">*&nbsp;</span></h4></label><input type="text" name="mod" id="mod" class="input_text"  placeholder="请选择生成模板"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                  <button id="submit_button" type="submit" class="btn btn-show"><span
+                            class="fa fa-check"></span> 提交
+                    </button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    &nbsp;&nbsp;
+                </div>
+            </div>
+        </form>
+</div>
+{% endblock %}
+
+{% block js %}
+{{ block.super }}
+<script type="text/javascript">
+$(document).ready(function() {
+    $("#submit_button").click(function () {
+        $(this.span).removeClass("fa-check");
+        $(this.span).addClass("fa-spinner fa-spin");
+        $(this).text(function (i, text) {
+            return text = "提交中....";
+        })
+    });
+    //Events that reset and restart the timer animation when the slides change
+    $("#transition-timer-carousel").on("slide.bs.carousel", function(event) {
+        //The animate class gets removed so that it jumps straight back to 0%
+        $(".transition-timer-carousel-progress-bar", this)
+            .removeClass("animate").css("width", "0%");
+    }).on("slid.bs.carousel", function(event) {
+        //The slide transition finished, so re-add the animate class so that
+        //the timer bar takes time to fill up
+        $(".transition-timer-carousel-progress-bar", this)
+            .addClass("animate").css("width", "100%");
+    });
+
+    //Kick off the initial slide animation when the document is ready
+    $(".transition-timer-carousel-progress-bar", "#transition-timer-carousel")
+        .css("width", "100%");
+});
+</script>
+{% endblock %}

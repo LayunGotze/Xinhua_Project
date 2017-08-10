@@ -1,0 +1,50 @@
+html {
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+
+}
+body
+{
+	font-family:Microsoft YaHei;
+    /*background-image: url('../img/sayagata-400px.png');*/
+}
+.headline {
+	margin:100px 0 50px 0;
+	border-bottom:1px dotted #428bca;
+	padding-left:0px;
+	color:#428bca;
+    font-size: 20px;
+    text-align: center;
+}
+.btn-show{
+    border:1px solid gray;
+    background-color: white;
+}
+.black{
+    color:black;
+}
+.gray{
+    color:#e3e3e3;
+}
+.white{
+    color:white;
+}
+#information_area{
+     /*visibility: hidden;*/
+     opacity: 0.9;
+     background: white;
+     right: 30px;
+     top: 20px;
+     position: absolute;
+     width: 130px;
+     max-height: 420px;
+     z-index: 100;
+}
+.information_content{
+    margin-left: 8px;
+}
+#map_area{
+    height: 650px;
+    width: 100%;
+}
+

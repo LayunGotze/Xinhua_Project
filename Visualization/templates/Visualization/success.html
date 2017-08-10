@@ -1,0 +1,61 @@
+{% extends 'Visualization/base.html' %}
+{% load staticfiles %}
+{% block css %}
+    {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{% static 'Visualization/css/success.css' %}"/>
+{% endblock %}
+{% block title %} 注册 {% endblock %}
+{% block navbar %}
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+    <div class="row">
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+    </div>
+        <div id="w">
+            <div id="content">
+                <div class="notify successbox" id="success" style="display: none;">
+                    <h1>成功!</h1>
+                    <span class="alerticon"><span class="fa fa-check-circle"></span></span>
+                    <p id="success_text">{{ msg }}</p>
+                </div>
+
+                <div class="notify errorbox" id="warning" style="display:none">
+                    <h1>警告!</h1>
+                    <span class="alerticon"><span class="fa fa-warning"></span></span>
+                    <p id="warning_text">{{ msg }}</p>
+                </div>
+                <div class="col-md-5"></div>
+                <div class="col-md-4 " style="margin-top:-10px;"><a class="btn btn-primary"  href={% url "Visualization:logon" %}>返回登录</a></div>
+                <div class="col-md-3"></div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block copyright %}
+{% endblock %}
+{% block js %}
+{{ block.super }}
+    <script>
+        $(document).ready(function() {
+        var mark = {{ mark|safe }};
+        if (mark == 1)
+        {
+            document.getElementById("success").style.display="";
+            document.getElementById("warning").style.display="none";
+            document.getElementById("success_text").innerText=msg;
+        }
+        if (mark == 0)
+        {
+            document.getElementById("success").style.display="none";
+            document.getElementById("warning").style.display="";
+            document.getElementById("warning_text").innerText=msg;
+        }
+    })
+    </script>
+{% endblock %}
